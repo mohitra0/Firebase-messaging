@@ -1,0 +1,145 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:laid/Controllers/const.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:hive/hive.dart';
+
+class NotificationController {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  static NotificationController get instance => NotificationController();
+
+  Future initLocalNotification() async {
+    if (Platform.isIOS) {
+      // set iOS Local notification.
+      var initializationSettingsAndroid =
+          AndroidInitializationSettings('launcher_icon');
+      var initializationSettingsIOS = IOSInitializationSettings(
+        requestSoundPermission: true,
+        requestBadgePermission: true,
+        requestAlertPermission: true,
+        onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
+      );
+      var initializationSettings = InitializationSettings(
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsIOS);
+      await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+          onSelectNotification: _selectNotification);
+    } else {
+      // set Android Local notification.
+      var initializationSettingsAndroid =
+          AndroidInitializationSettings('launcher_icon');
+      var initializationSettingsIOS = IOSInitializationSettings(
+          onDidReceiveLocalNotification: _onDidReceiveLocalNotification);
+      var initializationSettings = InitializationSettings(
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsIOS);
+      await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+          onSelectNotification: _selectNotification);
+    }
+  }
+
+  Future _onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {}
+
+  Future _selectNotification(String payload) async {}
+
+  sendLocalNotification(name, msg) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'your channel id',
+      'Aster',
+      'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'test',
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      name,
+      msg,
+      platformChannelSpecifics,
+    );
+  }
+
+  // Send a notification message
+
+  Future<void> sendNotificationMessageToPeerUser(unReadMSGCount, messageType,
+      textFromTextField, myName, chatID, peerUserToken) async {
+    FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+    await http.post(
+      'https://fcm.googleapis.com/fcm/send',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$firebaseCloudserverToken',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': messageType == 'text' ? '$textFromTextField' : '(Photo)',
+            'title': '$myName',
+            'badge': '$unReadMSGCount', //'$unReadMSGCount'
+            "sound": "default",
+            'color': '#6200EE'
+          },
+          'priority': 'high',
+          'data': {
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done',
+            'chatroomid': chatID,
+          },
+          'to': peerUserToken,
+        },
+      ),
+    );
+
+    final Completer<Map<String, dynamic>> completer =
+        Completer<Map<String, dynamic>>();
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> textFromTextField) async {
+        completer.complete(textFromTextField);
+
+        print("onLaunch:");
+      },
+      onBackgroundMessage: myBackgroundMessageHandler,
+      onLaunch: (Map<String, dynamic> textFromTextField) async {
+        print("onLaunch: $textFromTextField");
+        completer.complete(textFromTextField);
+      },
+      onResume: (Map<String, dynamic> textFromTextField) async {
+        print("onResume: $textFromTextField");
+        completer.complete(textFromTextField);
+      },
+    );
+    return completer.future;
+  }
+}
+
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  print("coming");
+  Directory directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  Box box = await Hive.openBox("fcm");
+  box.put("fcm", "from Hive ${message.toString()}");
+  print("hello world");
+  if (message.containsKey('data')) {
+    // Handle data message
+    final dynamic data = message['data'];
+  }
+
+  if (message.containsKey('notification')) {
+    // Handle notification message
+    final dynamic notification = message['notification'];
+  }
+}
