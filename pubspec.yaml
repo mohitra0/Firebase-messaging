@@ -1,0 +1,153 @@
+name: laid
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.39+39
+
+environment:
+  sdk: ">=2.8.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  liquid_swipe:
+  widget_animator:
+  bottom_personalized_dot_bar:
+  gradient_app_bar:
+  google_nav_bar:
+  line_icons:
+  google_sign_in:
+  cloud_firestore:
+  firebase_core:
+  firebase_auth:
+  datetime_picker_formfield:
+  firebase_storage: ^5.0.1
+  image_cropper: ^1.3.1
+  image_picker:
+  mobx:
+  flutter_mobx:
+  provider:
+  flutter_svg: ^0.18.0
+  form_field_validator:
+  hexcolor:
+  flutter_spinkit:
+  flutter_rounded_date_picker:
+  curved_navigation_bar:
+  font_awesome_flutter:
+  flutter_local_notifications: ^3.0.1+6
+  numeric_keyboard:
+  shared_preferences:
+  cached_network_image:
+  firebase_messaging: ^7.0.3
+  flutter_widgets:
+  photo_view:
+  url_launcher:
+  fluttertoast:
+  random_color:
+  google_fonts:
+  date_format:
+  page_transition:
+  flutter_share:
+  flutter_staggered_grid_view:
+  transparent_image:
+  simple_animations:
+  flutter_launcher_icons:
+  photo:
+  share:
+  http:
+  esys_flutter_share:
+  flare_flutter: ^2.0.6
+  flutter_app_badger: ^1.1.2
+  carousel_slider: ^1.4.1
+  badges: ^1.1.4
+  flutter_screenutil: ^3.2.0
+  lottie: ^0.7.0+1
+  swipe_to: 0.0.1+8
+  status_alert: ^0.1.3
+  expandable_text: ^1.1.0
+  dropdown_search: ^0.4.8
+  tab_indicator_styler: ^1.0.0
+  pinput: ^0.2.6
+  awesome_dialog: ^1.3.1
+  facebook_app_events: ^0.8.2
+  flutter_facebook_login: ^3.0.0
+  flutter_facebook_auth: "^1.0.0"
+  facebook_audience_network: ^0.8.0
+  linkable: ^1.0.4
+  text_editor: ^0.3.2
+  custom_switch: ^0.0.1
+  flappy_search_bar: ^1.7.2
+  firebase_admob: ^0.5.3
+  flutter_search_bar: ^2.1.0
+  giphy_picker:
+  flutter_audio_recorder: ^0.5.5
+  audioplayers:
+  flutter_custom_slider: ^0.0.7
+  hive:
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^0.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/icons/
+    - ASSET/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: Proxima
+      fonts:
+        - asset: ASSET/fonts/bold.otf
+          # style: Bold
+          # style: "thin"
+
+    - family: Proximathin
+      fonts:
+        - asset: ASSET/fonts/thin.otf
+
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
